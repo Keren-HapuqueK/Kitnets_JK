@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="content">
+    <div class="header">
+        <div class="title">Visualizar Contrato</div>
+    </div>
+    <table class="table table-striped">
+        <tr>
+            <th>ID</th>
+            <td>{{ contrato.0 }}</td>
+        </tr>
+        <tr>
+            <th>Número do Contrato</th>
+            <td>{{ contrato.1 }}</td>
+        </tr>
+        <tr>
+            <th>Valor do Aluguel</th>
+            <td>{{ contrato.2 }}</td>
+        </tr>
+        <tr>
+            <th>Data de Início</th>
+            <td>{{ contrato.3 }}</td>
+        </tr>
+        <tr>
+            <th>Dia Base</th>
+            <td>{{ contrato.4 }}</td>
+        </tr>
+        <tr>
+            <th>Data de Fim</th>
+            <td>{{ contrato.5 }}</td>
+        </tr>
+        <tr>
+            <th>Cidade</th>
+            <td>{{ contrato.6 }}</td>
+        </tr>
+        <tr>
+            <th>UF</th>
+            <td>{{ contrato.7 }}</td>
+        </tr>
+        <tr>
+            <th>Imóvel</th>
+            <td>{{ contrato.8 }}</td>
+        </tr>
+        <tr>
+            <th>Locatário</th>
+            <td>{{ contrato.9 }}</td>
+        </tr>
+        <tr>
+            <th>Locador</th>
+            <td>{{ contrato.10 }}</td>
+        </tr>
+    </table>
+    <a href="{% url 'listar_contratos' %}" class="btn btn-secondary">Voltar</a>
+</div>
+{% endblock %}

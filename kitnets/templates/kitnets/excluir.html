@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="content">
+    <div class="header">
+        <div class="title">Excluir Imóvel</div>
+    </div>
+    <p>Tem certeza que deseja excluir o imóvel?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Excluir</button>
+        <a href="{% url 'listar_imoveis' %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

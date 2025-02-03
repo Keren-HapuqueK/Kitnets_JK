@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kitnets JK</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="{% static 'images/logo/logoa.png' %}">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}" />
+     <title>Locadores</title>
+</head>
+<body>
+    <div class="d-flex">
+        <div class="sidebar">
+            <h2>Kitnets JK</h2>
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a href="{% url 'listar_locatarios' %}" class="nav-link text-white">Inquilinos</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'listar_locadores' %}" class="nav-link text-white">Locadores</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'listar_imoveis' %}" class="nav-link text-white">Kitnets</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'listar_pagamentos' %}" class="nav-link text-white">Pagamentos</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'listar_contratos' %}" class="nav-link text-white">Contratos</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'listar_estados_civis' %}" class="nav-link text-white">Estados Civis</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'listar_formas_pagamento' %}" class="nav-link text-white">Formas de Pagamento</a>
+                </li>
+            </ul>
+        </div>
+
+        {% block content %}{% endblock %}
+    </body>
+  </html>

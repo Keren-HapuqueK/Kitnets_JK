@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    
+    <!-- Cabeçalho -->
+    <div class="d-flex justify-content-between align-items-center bg-warning text-dark p-3 rounded">
+        <h2 class="m-0">Lista de Imóveis</h2>
+        <div class="d-flex gap-2">
+            <form method="GET" class="d-flex">
+                <input type="text" name="search" value="{{ search_query }}" class="form-control me-2" placeholder="Pesquisar...">
+                <button type="submit" class="btn btn-dark"><i class="fas fa-search"></i></button>
+            </form>
+            <a href="{% url 'criar_imovel' %}" class="btn btn-dark">
+                <i class="fas fa-plus"></i> Adicionar Imóvel
+            </a>
+        </div>
+    </div>
+
+    <!-- Lista de Imóveis -->
+    <div class="kitnet-list mt-4">
+        {% for imovel in imoveis %}
+        <div class="kitnet-card d-flex align-items-center justify-content-between p-3 bg-white shadow-sm rounded mb-3">
+            
+            <!-- Ícone do imóvel -->
+            <div class="icon-box">
+                <i class="fas fa-home text-warning"></i>
+            </div>
+
+            <!-- Informações do imóvel -->
+            <div class="kitnet-info flex-grow-1 ms-3">
+                <h5 class="mb-1">{{ imovel.2 }}</h5>
+                <p class="text-muted">{{ imovel.3 }}</p>
+            </div>
+
+            <!-- Disponibilidade e valor -->
+            <div class="text-center">
+                <span class="badge {% if imovel.4 == 'Sim' %}bg-success{% else %}bg-danger{% endif %}">
+                    {{ imovel.4 }}
+                </span>
+                <p class="fw-bold text-dark mt-1">R$ {{ imovel.5 }}</p>
+            </div>
+
+            <!-- Inquilino -->
+            <div class="text-center">
+                <p class="text-dark fw-bold">{{ imovel.6 }}</p>
+            </div>
+
+            <!-- Botões de ação -->
+            <div class="kitnet-actions d-flex gap-2">
+                <a href="{% url 'visualizar_imovel' imovel.0 %}" class="btn btn-light border">
+                    <i class="fas fa-eye"></i>
+                </a>
+                <a href="{% url 'editar_imovel' imovel.0 %}" class="btn btn-warning">
+                    <i class="fas fa-edit"></i>
+                </a>
+                <a href="{% url 'excluir_imovel' imovel.0 %}" class="btn btn-danger">
+                    <i class="fas fa-trash"></i>
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

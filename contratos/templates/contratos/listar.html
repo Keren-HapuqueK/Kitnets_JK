@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="content">
+    <div class="header">
+        <div class="title">Lista de Contratos</div>
+        <form method="GET" class="d-flex">
+            <input type="text" name="search" value="{{ search_query }}" class="form-control me-2" placeholder="Pesquisar...">
+            <button type="submit" class="btn btn-primary">Pesquisar</button>
+        </form>
+        <a href="{% url 'criar_contrato' %}" class="btn btn-primary">Adicionar Contrato</a>
+    </div>
+    <form method="get" class="mb-3">
+        <label for="ordenar_por">Ordenar por: </label>
+        <select name="ordenar_por" id="ordenar_por" class="form-select">
+            <option value="NU_Contrato">Número do Contrato</option>
+            <option value="Cidade">Cidade</option>
+            <option value="DT_Inicio">Data de Início</option>
+        </select>
+        <button type="submit" class="btn btn-primary mt-2">Ordenar</button>
+    </form>
+    
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Número do Contrato</th>
+                <th>Valor do Aluguel</th>
+                <th>Data de Início</th>
+                <th>Dia Base</th>
+                <th>Data de Fim</th>
+                <th>Cidade</th>
+                <th>UF</th>
+                <th>Imóvel</th>
+                <th>Locatário</th>
+                <th>Locador</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for contrato in contratos %}
+            <tr>
+                <td>{{ contrato.1 }}</td>
+                <td>{{ contrato.2 }}</td>
+                <td>{{ contrato.3 }}</td>
+                <td>{{ contrato.4 }}</td>
+                <td>{{ contrato.5 }}</td>
+                <td>{{ contrato.6 }}</td>
+                <td>{{ contrato.7 }}</td>
+                <td>{{ contrato.8 }}</td>
+                <td>{{ contrato.9 }}</td>
+                <td>{{ contrato.10 }}</td>
+                <td>
+                    <a href="{% url 'visualizar_contrato' contrato.0 %}" class="btn btn-info" >
+                        <i class="fas fa-eye"></i> Visualizar
+                    </a>
+                    <a href="{% url 'editar_contrato' contrato.0 %}" class="btn btn-warning">Editar</a>
+                    <a href="{% url 'excluir_contrato' contrato.0 %}" class="btn btn-danger">Excluir</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

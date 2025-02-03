@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>Lista de Pagamentos</h1>
+    <form method="GET" class="d-flex mb-3">
+        <input type="text" name="search" value="{{ search_query }}" class="form-control me-2" placeholder="Pesquisar...">
+        <button type="submit" class="btn btn-primary">Pesquisar</button>
+    </form>
+    <a href="{% url 'criar_pagamento' %}" class="btn btn-primary mb-3">+ Adicionar Pagamento</a>
+    <table class="table table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th>Data de Pagamento</th>
+                <th>Referência</th>
+                <th>Observação</th>
+                <th>Contrato</th>
+                <th>Locatário</th>
+                <th>Forma de Pagamento</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for pagamento in pagamentos %}
+            <tr>
+                <td>{{ pagamento.data_pagamento }}</td>
+                <td>{{ pagamento.referencia }}</td>
+                <td>{{ pagamento.observacao }}</td>
+                <td>{{ pagamento.contrato.nome }}</td>
+                <td>{{ pagamento.locatario.nome }}</td>
+                <td>{{ pagamento.forma_pagamento.nome }}</td>
+                <td>
+                    <a href="{% url 'editar_pagamento' pagamento.id %}" class="btn btn-warning btn-sm">Editar</a>
+                    <a href="{% url 'excluir_pagamento' pagamento.id %}" class="btn btn-danger btn-sm">Excluir</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

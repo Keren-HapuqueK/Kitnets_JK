@@ -1,0 +1,116 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kitnets JK - Página Inicial</title>
+    <link rel="icon" type="image/x-icon" href="{% static 'images/logo/logoa.png' %}"> 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #FFF8D6;
+            font-family: Arial, sans-serif;
+        }
+        .header {
+            background-color: #161301;
+            color: #fff;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .header img {
+            height: 50px;
+        }
+        .header .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .card {
+            background-color: #161301;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+            width: 200px;
+            height: 200px;
+            margin: 10px 10px;
+            box-shadow: 0px 4px 6px rgba(37, 27, 0, 0.1);
+            cursor: pointer;
+        }
+        .card:hover {
+            background-color: rgb(41, 34, 0);
+        }
+        .card img {
+            width: 50px;
+            margin-bottom: 15px;
+            align-self: center;
+        }
+
+        .custom-row {
+            row-gap: -5px !important; /* Diminui o espaçamento entre as linhas */
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div>
+            <img src="{% static 'images/logo/logoa.png' %}" alt="Kitnets JK">
+        </div>
+        <div class="user-info">
+            <img src="{% static 'images/user-icon.png' %}" alt="User" style="height: 40px; border-radius: 50%;">
+            <span>{{ user.username }}</span>
+        </div>
+    </header>
+
+    <div class="container mt-5">
+        <!-- Row de Cards -->
+        <div class="row gy-0">
+            <div class="col-lg-4 col-md-6 col-sm-12 d-flex justify-content-center">
+                <div class="card" onclick="window.location.href='{% url 'listar_locatarios' %}'">
+                    <img src="{% static 'images/inquilinos.png' %}" alt="Locatarios">
+                    <h3>Inquilinos</h3>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-12 d-flex justify-content-center">
+                <div class="card" onclick="window.location.href='{% url 'listar_imoveis' %}'">
+                    <img src="{% static 'images/kitnets.png' %}" alt="Kitnets">
+                    <h3>Kitnets</h3>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-12 d-flex justify-content-center">
+                <div class="card" onclick="window.location.href='{% url 'listar_pagamentos' %}'">
+                    <img src="{% static 'images/pagamentos.png' %}" alt="Pagamentos">
+                    <h3>Pagamentos</h3>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-12 d-flex justify-content-center">
+                <div class="card" onclick="window.location.href='{% url 'listar_contratos' %}'">
+                    <img src="{% static 'images/contratos.png' %}" alt="Contratos">
+                    <h3>Contratos</h3>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-12 d-flex justify-content-center">
+                <div class="card" onclick="window.location.href='{% url 'listar_locadores' %}'">
+                    <img src="{% static 'images/locadores.png' %}" alt="Locadores">
+                    <h3>Locadores</h3>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-12 d-flex justify-content-center">
+                <div class="card" onclick="window.location.href='{% url 'listar_estados_civis' %}'">
+                    <img src="{% static 'images/estado_civil.png' %}" alt="Estado Civil">
+                    <h3>Estado Civil</h3>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-12 d-flex justify-content-center">
+                <div class="card" onclick="window.location.href='{% url 'listar_formas_pagamento' %}'">
+                    <img src="{% static 'images/forma_pagamento.png' %}" alt="Formas de Pagamento">
+                    <h3>Formas de Pagamento</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

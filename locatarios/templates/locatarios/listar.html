@@ -1,0 +1,41 @@
+{% extends 'base_locatarios.html' %}
+{% load static %}
+{% block content %}
+<div class="content">
+    <div class="header">
+        <div class="title">Lista de Locatários</div>
+        <form method="GET" class="d-flex">
+            <input type="text" name="search" value="{{ search_query }}" class="form-control me-2" placeholder="Pesquisar...">
+            <button type="submit" class="btn btn-primary">Pesquisar</button>
+        </form>
+        <a href="{% url 'criar_locatario' %}" class="btn btn-primary">Adicionar Locatário</a>
+    </div>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Telefone</th>
+                <th>RG</th>
+                <th>CPF/CNPJ</th>
+                <th>Estado Civil</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for locatario in locatarios %}
+            <tr>
+                <td>{{ locatario.1 }}</td>
+                <td>{{ locatario.2 }}</td>
+                <td>{{ locatario.3 }}</td>
+                <td>{{ locatario.4 }}</td>
+                <td>{{ locatario.5 }}</td>
+                <td>
+                    <a href="{% url 'editar_locatario' locatario.0 %}" class="btn btn-warning">Editar</a>
+                    <a href="{% url 'excluir_locatario' locatario.0 %}" class="btn btn-danger">Excluir</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

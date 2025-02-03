@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="content">
+    <div class="header">
+        <div class="title">Lista de Locadores</div>
+        <form method="GET" class="d-flex">
+            <input type="text" name="search" value="{{ search_query }}" class="form-control me-2" placeholder="Pesquisar...">
+            <button type="submit" class="btn btn-primary">Pesquisar</button>
+        </form>
+        <a href="{% url 'criar_locador' %}" class="btn btn-primary">Adicionar Locador</a>
+    </div>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Telefone</th>
+                <th>RG</th>
+                <th>CPF/CNPJ</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for locador in locadores %}
+            <tr>
+                <td>{{ locador.1 }}</td>
+                <td>{{ locador.2 }}</td>
+                <td>{{ locador.3 }}</td>
+                <td>{{ locador.4 }}</td>
+                <td>
+                    <a href="{% url 'editar_locador' locador.0 %}" class="btn btn-warning">Editar</a>
+                    <a href="{% url 'excluir_locador' locador.0 %}" class="btn btn-danger">Excluir</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

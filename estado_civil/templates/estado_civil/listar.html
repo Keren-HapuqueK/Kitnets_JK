@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="content">
+    <div class="header">
+        <div class="title">Lista de Estados Civis</div>
+        <form method="GET" class="d-flex">
+            <input type="text" name="search" value="{{ search_query }}" class="form-control me-2" placeholder="Pesquisar...">
+            <button type="submit" class="btn btn-primary">Pesquisar</button>
+        </form>
+        <a href="{% url 'criar_estado_civil' %}" class="btn btn-primary">Adicionar Estado Civil</a>
+    </div>
+    {% if estados_civis %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Descrição</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for estado_civil in estados_civis %}
+                <tr>
+                    <td>{{ estado_civil.1 }}</td>
+                    <td>
+                        <a href="{% url 'editar_estado_civil' estado_civil.0 %}" class="btn btn-warning">Editar</a>
+                        <a href="{% url 'excluir_estado_civil' estado_civil.0 %}" class="btn btn-danger">Excluir</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Nenhum estado civil encontrado.</p>
+    {% endif %}
+</div>
+{% endblock %}
