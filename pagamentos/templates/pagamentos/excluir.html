@@ -5,7 +5,7 @@
     <div class="header">
         <div class="title">Excluir Pagamento</div>
     </div>
-    <p>Tem certeza que deseja excluir o pagamento?</p>
+    <p>Tem certeza que deseja excluir o pagamento<strong>{{ pagamento.referencia }}</strong>?</p>
     <form method="post">
         {% csrf_token %}
         <button type="submit" class="btn btn-danger">Excluir</button>

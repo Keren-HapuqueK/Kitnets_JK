@@ -5,7 +5,7 @@
     <div class="header">
         <div class="title">Excluir Contrato</div>
     </div>
-    <p>Tem certeza que deseja excluir o contrato?</p>
+    <p>Tem certeza que deseja excluir o contrato <strong>{{ contrato.nome }}</strong>?</p>
     <form method="post">
         {% csrf_token %}
         <button type="submit" class="btn btn-danger">Excluir</button>
