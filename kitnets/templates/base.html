@@ -14,14 +14,11 @@
 
     <!-- Sidebar -->
     <div class="d-flex">
-        <div class="sidebar bg-dark text-white p-3">
-            <h2 class="text-warning">Kitnets JK</h2>
+        <div class="sidebar text-white p-3">
+            <img src="{% static 'images/logo/logoa.png' %}" alt="Kitnets JK" width="100" class="center">
             <ul class="nav flex-column">
                 <li class="nav-item">
                     <a href="{% url 'listar_locatarios' %}" class="nav-link text-white"><i class="fas fa-users"></i> Inquilinos</a>
-                </li>
-                <li class="nav-item">
-                    <a href="{% url 'listar_locadores' %}" class="nav-link text-white"><i class="fas fa-user-tie"></i> Locadores</a>
                 </li>
                 <li class="nav-item">
                     <a href="{% url 'listar_imoveis' %}" class="nav-link text-white"><i class="fas fa-home"></i> Kitnets</a>
@@ -31,6 +28,9 @@
                 </li>
                 <li class="nav-item">
                     <a href="{% url 'listar_contratos' %}" class="nav-link text-white"><i class="fas fa-file-contract"></i> Contratos</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'listar_locadores' %}" class="nav-link text-white"><i class="fas fa-user-tie"></i> Locadores</a>
                 </li>
                 <li class="nav-item">
                     <a href="{% url 'listar_estados_civis' %}" class="nav-link text-white"><i class="fas fa-heart"></i> Estados Civis</a>

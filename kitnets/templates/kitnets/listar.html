@@ -11,6 +11,13 @@
                 <input type="text" name="search" value="{{ search_query }}" class="form-control me-2" placeholder="Pesquisar...">
                 <button type="submit" class="btn btn-dark"><i class="fas fa-search"></i></button>
             </form>
+            <form method="get" class="mb-3">
+                <label for="ordenar_por">Ordenar por: </label>
+                <select name="ordenar_por" id="ordenar_por" class="form-select">
+                    <option value="nome">Nome</option>
+                </select>
+                <button type="submit" class="btn btn-dark mt-2">Ordenar</button>
+            </form>
             <a href="{% url 'criar_imovel' %}" class="btn btn-dark">
                 <i class="fas fa-plus"></i> Adicionar Imóvel
             </a>

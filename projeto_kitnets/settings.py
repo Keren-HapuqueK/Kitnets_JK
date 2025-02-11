@@ -65,7 +65,7 @@ ROOT_URLCONF = 'projeto_kitnets.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],  # Adicione o caminho para a pasta templates
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

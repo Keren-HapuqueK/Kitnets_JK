@@ -5,25 +5,26 @@ from .forms import RegistroPagamentoForm, FormaPagamentoForm
 
 def listar_pagamentos(request):
     search_query = request.GET.get('search', '').lower()
+    ordenar_por = request.GET.get('ordenar_por', 'rp.DT_Paga')  # Ordena por DT_Paga por padrão
     with connection.cursor() as cursor:
         if search_query:
-            cursor.execute("""
+            cursor.execute(f"""
                 SELECT rp.ID_Pagamento, rp.DT_Paga, rp.Ref_Mes_Ano, rp.Observacao, c.NU_Contrato, l.Nome, fp.Desc_Forma_Pgto
                 FROM Registro_Pagamento rp
                 LEFT JOIN Contrato c ON rp.ID_Contrato = c.ID_Contrato
                 LEFT JOIN Locatario l ON rp.ID_Locatario = l.ID_Locatario
                 LEFT JOIN Forma_Pagamento fp ON rp.ID_Forma_Pagamento = fp.ID_Forma_Pagamento
                 WHERE LOWER(rp.Ref_Mes_Ano) LIKE %s
-                ORDER BY rp.DT_Paga ASC
+                ORDER BY {ordenar_por} ASC
             """, [f'%{search_query}%'])
         else:
-            cursor.execute("""
+            cursor.execute(f"""
                 SELECT rp.ID_Pagamento, rp.DT_Paga, rp.Ref_Mes_Ano, rp.Observacao, c.NU_Contrato, l.Nome, fp.Desc_Forma_Pgto
                 FROM Registro_Pagamento rp
                 LEFT JOIN Contrato c ON rp.ID_Contrato = c.ID_Contrato
                 LEFT JOIN Locatario l ON rp.ID_Locatario = l.ID_Locatario
                 LEFT JOIN Forma_Pagamento fp ON rp.ID_Forma_Pagamento = fp.ID_Forma_Pagamento
-                ORDER BY rp.DT_Paga ASC
+                ORDER BY {ordenar_por} ASC
             """)
         pagamentos = cursor.fetchall()
     pagamentos = [
@@ -38,7 +39,7 @@ def listar_pagamentos(request):
         }
         for p in pagamentos
     ]
-    return render(request, 'pagamentos/listar.html', {'pagamentos': pagamentos, 'search_query': search_query})
+    return render(request, 'pagamentos/listar.html', {'pagamentos': pagamentos, 'search_query': search_query, 'ordenar_por': ordenar_por})
 
 def criar_pagamento(request):
     if request.method == 'POST':
@@ -131,17 +132,18 @@ def excluir_pagamento(request, id_pagamento):
 
 def listar_formas_pagamento(request):
     search_query = request.GET.get('search', '').lower()
+    ordenar_por = request.GET.get('ordenar_por', 'desc_forma_pgto')  # Ordena por desc_forma_pgto por padrão
     with connection.cursor() as cursor:
         if search_query:
-            cursor.execute("""
+            cursor.execute(f"""
                 SELECT * FROM Forma_Pagamento
                 WHERE LOWER(desc_forma_pgto) LIKE %s
-                ORDER BY desc_forma_pgto ASC
+                ORDER BY {ordenar_por} ASC
             """, [f'%{search_query}%'])
         else:
-            cursor.execute("SELECT * FROM Forma_Pagamento ORDER BY desc_forma_pgto ASC")
+            cursor.execute(f"SELECT * FROM Forma_Pagamento ORDER BY {ordenar_por} ASC")
         formas_pagamento = cursor.fetchall()
-    return render(request, 'forma_pagamento/listar.html', {'formas_pagamento': formas_pagamento, 'search_query': search_query})
+    return render(request, 'forma_pagamento/listar.html', {'formas_pagamento': formas_pagamento, 'search_query': search_query, 'ordenar_por': ordenar_por})
 
 def criar_forma_pagamento(request):
     if request.method == 'POST':

@@ -46,7 +46,7 @@ def listar_contratos(request):
                 """
                 cursor.execute(query)
             contratos = cursor.fetchall()
-            return render(request, 'contratos/listar.html', {'contratos': contratos, 'search_query': search_query})
+            return render(request, 'contratos/listar.html', {'contratos': contratos, 'search_query': search_query, 'ordenar_por': ordenar_por})
     except Exception as e:
         return HttpResponse(f"Erro ao listar contratos: {e}", status=500)
 

@@ -13,30 +13,31 @@
 <body>
 
 
+    <!-- Sidebar -->
     <div class="d-flex">
-        <div class="sidebar">
-            <h2>Kitnets JK</h2>
+        <div class="sidebar text-white p-3">
+            <img src="{% static 'images/logo/logoa.png' %}" alt="Kitnets JK" width="100" class="center">
             <ul class="nav flex-column">
                 <li class="nav-item">
-                    <a href="{% url 'listar_locatarios' %}" class="nav-link text-white">Inquilinos</a>
+                    <a href="{% url 'listar_locatarios' %}" class="nav-link text-white"><i class="fas fa-users"></i> Inquilinos</a>
                 </li>
                 <li class="nav-item">
-                    <a href="{% url 'listar_locadores' %}" class="nav-link text-white">Locadores</a>
+                    <a href="{% url 'listar_imoveis' %}" class="nav-link text-white"><i class="fas fa-home"></i> Kitnets</a>
                 </li>
                 <li class="nav-item">
-                    <a href="{% url 'listar_imoveis' %}" class="nav-link text-white">Kitnets</a>
+                    <a href="{% url 'listar_pagamentos' %}" class="nav-link text-white"><i class="fas fa-dollar-sign"></i> Pagamentos</a>
                 </li>
                 <li class="nav-item">
-                    <a href="{% url 'listar_pagamentos' %}" class="nav-link text-white">Pagamentos</a>
+                    <a href="{% url 'listar_contratos' %}" class="nav-link text-white"><i class="fas fa-file-contract"></i> Contratos</a>
                 </li>
                 <li class="nav-item">
-                    <a href="{% url 'listar_contratos' %}" class="nav-link text-white">Contratos</a>
+                    <a href="{% url 'listar_locadores' %}" class="nav-link text-white"><i class="fas fa-user-tie"></i> Locadores</a>
                 </li>
                 <li class="nav-item">
-                    <a href="{% url 'listar_estados_civis' %}" class="nav-link text-white">Estados Civis</a>
+                    <a href="{% url 'listar_estados_civis' %}" class="nav-link text-white"><i class="fas fa-heart"></i> Estados Civis</a>
                 </li>
                 <li class="nav-item">
-                    <a href="{% url 'listar_formas_pagamento' %}" class="nav-link text-white">Formas de Pagamento</a>
+                    <a href="{% url 'listar_formas_pagamento' %}" class="nav-link text-white"><i class="fas fa-credit-card"></i> Formas de Pagamento</a>
                 </li>
             </ul>
         </div>

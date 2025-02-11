@@ -20,15 +20,16 @@ def executar_sql(query, params=None, fetch_one=False):
 # Listar estados civis
 def listar_estados_civis(request):
     search_query = request.GET.get('search', '').lower()
+    ordenar_por = request.GET.get('ordenar_por', 'desc_estado_civil')  # Ordena por desc_estado_civil por padrão
     try:
         if search_query:
             estados_civis = executar_sql(
-                'SELECT * FROM estado_civil WHERE LOWER(desc_estado_civil) LIKE %s ORDER BY desc_estado_civil ASC',
+                f'SELECT * FROM estado_civil WHERE LOWER(desc_estado_civil) LIKE %s ORDER BY {ordenar_por} ASC',
                 [f'%{search_query}%']
             )
         else:
-            estados_civis = executar_sql('SELECT * FROM estado_civil ORDER BY desc_estado_civil ASC')
-        return render(request, 'estado_civil/listar.html', {'estados_civis': estados_civis, 'search_query': search_query})
+            estados_civis = executar_sql(f'SELECT * FROM estado_civil ORDER BY {ordenar_por} ASC')
+        return render(request, 'estado_civil/listar.html', {'estados_civis': estados_civis, 'search_query': search_query, 'ordenar_por': ordenar_por})
     except Exception as e:
         return HttpResponse(f"Erro ao listar estados civis: {e}", status=500)
 

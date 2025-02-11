@@ -7,7 +7,7 @@
     </div>
     <form method="post">
         {% csrf_token %}
-        <p>Tem certeza que deseja excluir o locatário<strong>{{ locatario.1 }}</strong>?</p>
+        <p>Tem certeza que deseja excluir o locatário <strong>{{ locatario.1 }}</strong>?</p>
         <button type="submit" class="btn btn-danger">Excluir</button>
         <a href="{% url 'listar_locatarios' %}" class="btn btn-secondary">Cancelar</a>
     </form>

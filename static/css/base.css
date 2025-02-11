@@ -3,6 +3,11 @@
  }
 
 /* Estilo da Sidebar */
+.center {
+    align-items: center !important;
+    left: 5px !important;
+}
+
 .sidebar {
     width: 250px;
     height: 100vh;

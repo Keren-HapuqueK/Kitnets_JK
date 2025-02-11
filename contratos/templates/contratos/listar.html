@@ -8,18 +8,17 @@
             <input type="text" name="search" value="{{ search_query }}" class="form-control me-2" placeholder="Pesquisar...">
             <button type="submit" class="btn btn-primary">Pesquisar</button>
         </form>
+        <form method="get" class="mb-3">
+            <label for="ordenar_por">Ordenar por: </label>
+            <select name="ordenar_por" id="ordenar_por" class="form-select">
+                <option value="NU_Contrato">Número do Contrato</option>
+                <option value="Cidade">Cidade</option>
+                <option value="DT_Inicio">Data de Início</option>
+            </select>
+            <button type="submit" class="btn btn-primary mt-2">Ordenar</button>
+        </form>
         <a href="{% url 'criar_contrato' %}" class="btn btn-primary">Adicionar Contrato</a>
     </div>
-    <form method="get" class="mb-3">
-        <label for="ordenar_por">Ordenar por: </label>
-        <select name="ordenar_por" id="ordenar_por" class="form-select">
-            <option value="NU_Contrato">Número do Contrato</option>
-            <option value="Cidade">Cidade</option>
-            <option value="DT_Inicio">Data de Início</option>
-        </select>
-        <button type="submit" class="btn btn-primary mt-2">Ordenar</button>
-    </form>
-    
     <table class="table table-striped">
         <thead>
             <tr>

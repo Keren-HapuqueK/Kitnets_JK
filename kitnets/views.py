@@ -8,22 +8,23 @@ logger = logging.getLogger(__name__)  # Instanciar o logger
 
 def listar_imoveis(request):
     search_query = request.GET.get('search', '').lower()
+    ordenar_por = request.GET.get('ordenar_por', 'Endereco')  # Ordena por Endereco por padrão
     with connection.cursor() as cursor:
         if search_query:
-            cursor.execute("""
+            cursor.execute(f"""
                 SELECT ID_Imovel, ID_Locador, Endereco, Descricao, Disponivel, Vlr_Aluguel, UC
                 FROM Imovel
                 WHERE LOWER(Endereco) LIKE %s
-                ORDER BY Endereco ASC
+                ORDER BY {ordenar_por} ASC
             """, [f'%{search_query}%'])
         else:
-            cursor.execute("""
+            cursor.execute(f"""
                 SELECT ID_Imovel, ID_Locador, Endereco, Descricao, Disponivel, Vlr_Aluguel, UC
                 FROM Imovel
-                ORDER BY Endereco ASC
+                ORDER BY {ordenar_por} ASC
             """)
         imoveis = cursor.fetchall()
-    return render(request, 'kitnets/listar.html', {'imoveis': imoveis, 'search_query': search_query})
+    return render(request, 'kitnets/listar.html', {'imoveis': imoveis, 'search_query': search_query, 'ordenar_por': ordenar_por})
 
 def criar_imovel(request):
     if request.method == 'POST':

@@ -8,22 +8,23 @@ logger = logging.getLogger(__name__)
 
 def listar_locadores(request):
     search_query = request.GET.get('search', '').lower()
+    ordenar_por = request.GET.get('ordenar_por', 'Nome')  # Ordena por Nome por padrão
     with connection.cursor() as cursor:
         if search_query:
-            cursor.execute("""
+            cursor.execute(f"""
                 SELECT ID_Locador, Nome, Telefone, RG, CPF_CNPJ, ID_Estado_Civil
                 FROM Locador
                 WHERE LOWER(Nome) LIKE %s
-                ORDER BY Nome ASC
+                ORDER BY {ordenar_por} ASC
             """, [f'%{search_query}%'])
         else:
-            cursor.execute("""
+            cursor.execute(f"""
                 SELECT ID_Locador, Nome, Telefone, RG, CPF_CNPJ, ID_Estado_Civil
                 FROM Locador
-                ORDER BY Nome ASC
+                ORDER BY {ordenar_por} ASC
             """)
         locadores = cursor.fetchall()
-    return render(request, 'locadores/listar.html', {'locadores': locadores, 'search_query': search_query})
+    return render(request, 'locadores/listar.html', {'locadores': locadores, 'search_query': search_query, 'ordenar_por': ordenar_por})
 
 def criar_locador(request):
     if request.method == 'POST':

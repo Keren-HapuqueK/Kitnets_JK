@@ -361,3 +361,5 @@ BEGIN
     DELETE FROM Registro_Pagamento WHERE ID_Pagamento = p_id_pagamento;
 END;
 $$ LANGUAGE plpgsql;
+
+SELECT * FROM autenticacao
