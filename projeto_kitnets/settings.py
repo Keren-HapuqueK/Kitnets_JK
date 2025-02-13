@@ -152,7 +152,7 @@ EMAIL_HOST = 'smtp.gmail.com'  # Use o servidor SMTP do seu provedor de e-mail
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'keren2015.hapuque@gmail.com'  # Substitua pelo seu e-mail
-EMAIL_HOST_PASSWORD = 'keren'  # Substitua pela senha do seu e-mail ou App Password
+EMAIL_HOST_PASSWORD = 'Hapuque2015.'  # Substitua pela senha do seu e-mail ou App Password
 
 
 
