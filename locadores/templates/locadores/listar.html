@@ -6,7 +6,7 @@
         <div class="title">Lista de Locadores</div>
         <form method="GET" class="d-flex">
             <input type="text" name="search" value="{{ search_query }}" class="form-control me-2" placeholder="Pesquisar...">
-            <button type="submit" class="btn btn-primary">Pesquisar</button>
+            <button type="submit" class="btn btn-primary header_cor">Pesquisar</button>
         </form>
         <form method="get" class="mb-3">
             <label for="ordenar_por">Ordenar por: </label>
@@ -15,9 +15,9 @@
                 <option value="telefone">Telefone</option>
                 <option value="cpf_cnpj">CPF/CNPJ</option>
             </select>
-            <button type="submit" class="btn btn-primary mt-2">Ordenar</button>
+            <button type="submit" class="btn btn-primary mt-2 header_cor">Ordenar</button>
         </form>
-        <a href="{% url 'criar_locador' %}" class="btn btn-primary">Adicionar Locador</a>
+        <a href="{% url 'criar_locador' %}" class="btn btn-primary header_cor">Adicionar Locador</a>
     </div>
     <table class="table table-striped">
         <thead>

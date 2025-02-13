@@ -5,16 +5,16 @@
     <h1>Lista de Pagamentos</h1>
     <form method="GET" class="d-flex mb-3">
         <input type="text" name="search" value="{{ search_query }}" class="form-control me-2" placeholder="Pesquisar...">
-        <button type="submit" class="btn btn-primary">Pesquisar</button>
+        <button type="submit" class="btn btn-primary header_cor">Pesquisar</button>
     </form>
     <form method="get" class="mb-3">
         <label for="ordenar_por">Ordenar por: </label>
         <select name="ordenar_por" id="ordenar_por" class="form-select">
             <option value="referencia">Referência</option>
         </select>
-        <button type="submit" class="btn btn-primary mt-2">Ordenar</button>
+        <button type="submit" class="btn btn-primary mt-2 header_cor">Ordenar</button>
     </form>
-    <a href="{% url 'criar_pagamento' %}" class="btn btn-primary mb-3">+ Adicionar Pagamento</a>
+    <a href="{% url 'criar_pagamento' %}" class="btn btn-primary mb-3 header_cor">Adicionar Pagamento</a>
     <table class="table table-bordered">
         <thead class="table-dark">
             <tr>

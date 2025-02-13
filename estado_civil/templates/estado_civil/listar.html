@@ -6,7 +6,7 @@
         <div class="title">Lista de Estados Civis</div>
         <form method="GET" class="d-flex">
             <input type="text" name="search" value="{{ search_query }}" class="form-control me-2" placeholder="Pesquisar...">
-            <button type="submit" class="btn btn-primary">Pesquisar</button>
+            <button type="submit" class="btn btn-primary header_cor">Pesquisar</button>
         </form>
         <form method="get" class="mb-3">
             <label for="ordenar_por">Ordenar por: </label>
@@ -15,7 +15,7 @@
             </select>
             <button type="submit" class="btn btn-primary mt-2">Ordenar</button>
         </form>
-        <a href="{% url 'criar_estado_civil' %}" class="btn btn-primary">Adicionar Estado Civil</a>
+        <a href="{% url 'criar_estado_civil' %}" class="btn btn-primary header_cor">Adicionar Estado Civil</a>
     </div>
     {% if estados_civis %}
         <table class="table table-striped">
