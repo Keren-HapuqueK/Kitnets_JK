@@ -1,14 +1,16 @@
 from django.shortcuts import render, redirect
 from django.db import connection
-from django.http import HttpResponse
+from django.http import JsonResponse, HttpResponse
+from django.views.decorators.csrf import csrf_protect
 from .forms import ImovelForm
 import logging
 
-logger = logging.getLogger(__name__)  # Instanciar o logger
+logger = logging.getLogger(__name__)
 
 def listar_imoveis(request):
     search_query = request.GET.get('search', '').lower()
-    ordenar_por = request.GET.get('ordenar_por', 'Endereco')  # Ordena por Endereco por padrão
+    ordenar_por = request.GET.get('ordenar_por', 'Endereco')
+
     with connection.cursor() as cursor:
         if search_query:
             cursor.execute(f"""
@@ -24,7 +26,12 @@ def listar_imoveis(request):
                 ORDER BY {ordenar_por} ASC
             """)
         imoveis = cursor.fetchall()
-    return render(request, 'kitnets/listar.html', {'imoveis': imoveis, 'search_query': search_query, 'ordenar_por': ordenar_por})
+    
+    return render(request, 'kitnets/listar.html', {
+        'imoveis': imoveis,
+        'search_query': search_query,
+        'ordenar_por': ordenar_por
+    })
 
 def criar_imovel(request):
     if request.method == 'POST':
@@ -89,27 +96,22 @@ def editar_imovel(request, id_imovel):
         })
     return render(request, 'kitnets/editar.html', {'form': form})
 
+@csrf_protect
 def excluir_imovel(request, id_imovel):
-    if request.method == 'POST':
+    logger.debug(f"Tentando excluir o imóvel com ID: {id_imovel}")
+    if request.method == "POST":
         try:
             with connection.cursor() as cursor:
-                cursor.callproc('excluir_imovel', [id_imovel])
-                return redirect('listar_imoveis')  # Redireciona para a listagem
+                cursor.callproc("excluir_imovel", [id_imovel])
+            logger.debug(f"Imóvel com ID: {id_imovel} excluído com sucesso")
+            return JsonResponse({"success": True})
         except Exception as e:
-            return HttpResponse(f"Erro ao excluir imovel: {e}", status=500)
-    else:
-        imovel = None
-        try:
-            with connection.cursor() as cursor:
-                cursor.execute("SELECT ID_Imovel, ID_Locador, Endereco, Descricao, Disponivel, Vlr_Aluguel, UC FROM Imovel WHERE ID_Imovel = %s", [id_imovel])
-                imovel = cursor.fetchone()
-        except Exception as e:
-            return HttpResponse(f"Erro ao carregar imovel: {e}", status=500)
+            logger.error(f"Erro ao excluir o imóvel com ID: {id_imovel} - {str(e)}")
+            return JsonResponse({"success": False, "error": str(e)}, status=500)
 
-        if imovel is None:
-            return HttpResponse("Imóvel não encontrado", status=404)
+    logger.error(f"Método inválido para excluir o imóvel com ID: {id_imovel}")
+    return JsonResponse({"success": False, "error": "Método inválido"}, status=400)
 
-        return render(request, 'kitnets/excluir.html', {'imovel': imovel})
 
 def visualizar_imovel(request, id_imovel):
     try:

@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="content">
+    <h2>Detalhes do Estado Civil</h2>
+    <table class="table table-bordered">
+        <tr>
+            <th>Descrição</th>
+            <td>{{ estado_civil.1 }}</td>
+        </tr>
+    </table>
+    <a href="{% url 'listar_estados_civis' %}" class="btn btn-primary">Voltar</a>
+</div>
+{% endblock %}

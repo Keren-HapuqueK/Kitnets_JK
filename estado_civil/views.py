@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.db import connection
 from .forms import EstadoCivilForm
 import logging
+from django.views.decorators.csrf import csrf_protect
 
 logger = logging.getLogger(__name__)
 
@@ -71,12 +72,26 @@ def editar_estado_civil(request, id_estado_civil):
         form = EstadoCivilForm(initial={'desc_estado_civil': estado_civil[1]})
     return render(request, 'estado_civil/editar.html', {'form': form})
 
-# Excluir estado civil
+@csrf_protect
 def excluir_estado_civil(request, id_estado_civil):
-    if request.method == 'POST':
+    logger.debug(f"Tentando excluir o estado civil com ID: {id_estado_civil}")
+    if request.method == "POST":
         try:
             executar_sql("SELECT excluir_estado_civil(%s)", [id_estado_civil])
-            return redirect('listar_estados_civis')
+            logger.debug(f"Estado civil com ID: {id_estado_civil} excluído com sucesso")
+            return JsonResponse({"success": True})
         except Exception as e:
-            return HttpResponse(f"Erro ao excluir estado civil: {e}", status=500)
-    return render(request, 'estado_civil/excluir.html', {'id_estado_civil': id_estado_civil})
+            logger.error(f"Erro ao excluir o estado civil com ID: {id_estado_civil} - {str(e)}")
+            return JsonResponse({"success": False, "error": str(e)}, status=500)
+
+    logger.error(f"Método inválido para excluir o estado civil com ID: {id_estado_civil}")
+    return JsonResponse({"success": False, "error": "Método inválido"}, status=400)
+
+def visualizar_estado_civil(request, id_estado_civil):
+    try:
+        estado_civil = executar_sql("SELECT * FROM estado_civil WHERE id_estado_civil = %s", [id_estado_civil], fetch_one=True)
+        if not estado_civil:
+            return HttpResponse("Estado civil não encontrado.", status=404)
+        return render(request, 'estado_civil/visualizar.html', {'estado_civil': estado_civil})
+    except Exception as e:
+        return HttpResponse(f"Erro ao visualizar estado civil: {e}", status=500)

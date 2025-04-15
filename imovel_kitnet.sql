@@ -290,37 +290,41 @@ $$ LANGUAGE plpgsql;
 
 
 
-CREATE OR REPLACE FUNCTION criar_forma_pagamento(desc_forma_pgto TEXT)
+-- ✅ Criar forma de pagamento
+CREATE OR REPLACE FUNCTION criar_forma_pagamento(p_desc_forma_pgto TEXT)
 RETURNS VOID AS $$
 BEGIN
     INSERT INTO forma_pagamento (desc_forma_pgto)
-    VALUES (desc_forma_pgto);
+    VALUES (p_desc_forma_pgto);
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION editar_forma_pagamento(id_forma_pagamento INT, desc_forma_pgto TEXT)
+-- ✅ Editar forma de pagamento
+CREATE OR REPLACE FUNCTION editar_forma_pagamento(p_id_forma_pagamento INT, p_desc_forma_pgto TEXT)
 RETURNS VOID AS $$
 BEGIN
-    UPDATE forma_pagamento
-    SET desc_forma_pgto = desc_forma_pgto
-    WHERE id_forma_pagamento = id_forma_pagamento;
+    UPDATE Forma_Pagamento
+    SET Desc_Forma_Pgto = p_desc_forma_pgto
+    WHERE ID_Forma_Pagamento = p_id_forma_pagamento;
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION excluir_forma_pagamento(id_forma_pagamento INT)
+-- ✅ Excluir forma de pagamento
+CREATE OR REPLACE FUNCTION excluir_forma_pagamento(p_id_forma_pagamento INT)
 RETURNS VOID AS $$
 BEGIN
-    DELETE FROM forma_pagamento
-    WHERE id_forma_pagamento = id_forma_pagamento;
+    DELETE FROM forma_pagamento WHERE id_forma_pagamento = p_id_forma_pagamento;
 END;
 $$ LANGUAGE plpgsql;
 
+-- ✅ Listar formas de pagamento (agora ordenadas por descrição)
 CREATE OR REPLACE FUNCTION listar_formas_pagamento()
 RETURNS TABLE(id_forma_pagamento INT, desc_forma_pgto TEXT) AS $$
 BEGIN
-    RETURN QUERY SELECT * FROM forma_pagamento;
+    RETURN QUERY SELECT id_forma_pagamento, desc_forma_pgto FROM forma_pagamento ORDER BY desc_forma_pgto;
 END;
 $$ LANGUAGE plpgsql;
+
 
 
 

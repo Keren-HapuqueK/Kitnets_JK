@@ -2,14 +2,8 @@
 
 {% block content %}
 <div class="content">
-    <div class="header">
-        <div class="title">Visualizar Contrato</div>
-    </div>
-    <table class="table table-striped">
-        <tr>
-            <th>ID</th>
-            <td>{{ contrato.0 }}</td>
-        </tr>
+    <h2>Detalhes do Contrato</h2>
+    <table class="table table-bordered">
         <tr>
             <th>Número do Contrato</th>
             <td>{{ contrato.1 }}</td>
@@ -51,6 +45,6 @@
             <td>{{ contrato.10 }}</td>
         </tr>
     </table>
-    <a href="{% url 'listar_contratos' %}" class="btn btn-secondary">Voltar</a>
+    <a href="{% url 'listar_contratos' %}" class="btn btn-primary">Voltar</a>
 </div>
 {% endblock %}

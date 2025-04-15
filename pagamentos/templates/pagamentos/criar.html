@@ -1,14 +1,65 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="content">
-    <div class="header">
-        <div class="title">Adicionar Pagamento</div>
-    </div>
-    <form method="post">
+<div class="container mt-5">
+    <h2 class="mb-4">Adicionar Pagamento</h2>
+    <form method="post" class="needs-validation" novalidate>
         {% csrf_token %}
-        {{ form.as_p }}
+        <div class="mb-3">
+            {{ form.dt_paga.label_tag }} {{ form.dt_paga }}
+            <div class="invalid-feedback">
+                Por favor, insira uma data válida.
+            </div>
+        </div>
+        <div class="mb-3">
+            {{ form.ref_mes_ano.label_tag }} {{ form.ref_mes_ano }}
+            <div class="invalid-feedback">
+                Por favor, insira uma referência válida.
+            </div>
+        </div>
+        <div class="mb-3">
+            {{ form.id_contrato.label_tag }} {{ form.id_contrato }}
+            <div class="invalid-feedback">
+                Por favor, selecione um contrato.
+            </div>
+        </div>
+        <div class="mb-3">
+            {{ form.id_locatario.label_tag }} {{ form.id_locatario }}
+            <div class="invalid-feedback">
+                Por favor, selecione um locatário.
+            </div>
+        </div>
+        <div class="mb-3">
+            {{ form.id_forma_pagamento.label_tag }} {{ form.id_forma_pagamento }}
+            <div class="invalid-feedback">
+                Por favor, selecione uma forma de pagamento.
+            </div>
+        </div>
+        <div class="mb-3">
+            {{ form.observacao.label_tag }} {{ form.observacao }}
+            <div class="invalid-feedback">
+                Por favor, insira uma observação.
+            </div>
+        </div>
         <button type="submit" class="btn btn-primary">Salvar</button>
+        <a href="{% url 'listar_pagamentos' %}" class="btn btn-secondary">Cancelar</a>
     </form>
 </div>
+
+<script>
+    (function () {
+        'use strict'
+        const forms = document.querySelectorAll('.needs-validation')
+        Array.prototype.slice.call(forms)
+            .forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+                    form.classList.add('was-validated')
+                }, false)
+            })
+    })()
+</script>
 {% endblock %}

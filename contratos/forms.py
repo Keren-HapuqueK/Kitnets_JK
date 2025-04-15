@@ -27,7 +27,11 @@ class ContratoForm(forms.Form):
 
     def get_locatario_choices(self):
         with connection.cursor() as cursor:
-            cursor.execute("SELECT ID_Locatario, Nome FROM Locatario")
+            cursor.execute("""
+                SELECT ID_Locatario, Nome 
+                FROM Locatario 
+                WHERE ID_Locatario NOT IN (SELECT ID_Locatario FROM Contrato)
+            """)
             locatario_options = cursor.fetchall()
         return [(str(option[0]), option[1]) for option in locatario_options]
 

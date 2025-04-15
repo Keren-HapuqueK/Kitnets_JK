@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect
 from django.db import connection
-from django.http import HttpResponse
-
+from django.http import HttpResponse, JsonResponse
+from django.views.decorators.csrf import csrf_protect
 from .forms import ContratoForm
+import logging
 
+logger = logging.getLogger(__name__)
 
 # Função para executar uma query no banco de dados
 def executar_query(query, parametros=None, fetchone=False, fetchall=False):
@@ -123,9 +125,9 @@ def editar_contrato(request, id_contrato):
         form = ContratoForm(initial={
             'nu_contrato': contrato[1],
             'vlr_aluguel': contrato[2],
-            'dt_inicio': contrato[3],
+            'dt_inicio': contrato[3].strftime('%Y-%m-%d') if contrato[3] else '',
             'dia_base': contrato[4],
-            'dt_fim': contrato[5],
+            'dt_fim': contrato[5].strftime('%Y-%m-%d') if contrato[5] else '',
             'cidade': contrato[6],
             'uf': contrato[7],
             'id_imovel': contrato[8],
@@ -134,15 +136,21 @@ def editar_contrato(request, id_contrato):
         })
     return render(request, 'contratos/editar.html', {'form': form})
 
+@csrf_protect
 def excluir_contrato(request, id_contrato):
-    if request.method == 'POST':
+    logger.debug(f"Tentando excluir o contrato com ID: {id_contrato}")
+    if request.method == "POST":
         try:
             with connection.cursor() as cursor:
-                cursor.callproc('excluir_contrato', [id_contrato])
-                return redirect('listar_contratos')
+                cursor.callproc("excluir_contrato", [id_contrato])
+            logger.debug(f"Contrato com ID: {id_contrato} excluído com sucesso")
+            return JsonResponse({"success": True})
         except Exception as e:
-            return HttpResponse(f"Erro ao excluir contrato: {e}", status=500)
-    return render(request, 'contratos/excluir.html', {'id_contrato': id_contrato})
+            logger.error(f"Erro ao excluir o contrato com ID: {id_contrato} - {str(e)}")
+            return JsonResponse({"success": False, "error": str(e)}, status=500)
+
+    logger.error(f"Método inválido para excluir o contrato com ID: {id_contrato}")
+    return JsonResponse({"success": False, "error": "Método inválido"}, status=400)
 
 def visualizar_contrato(request, id_contrato):
     try:
@@ -157,6 +165,8 @@ def visualizar_contrato(request, id_contrato):
                 WHERE c.ID_Contrato = %s
             """, [id_contrato])
             contrato = cursor.fetchone()
+            if contrato is None:
+                return HttpResponse("Contrato não encontrado", status=404)
             return render(request, 'contratos/visualizar.html', {'contrato': contrato})
     except Exception as e:
         return HttpResponse(f"Erro ao visualizar contrato: {e}", status=500)

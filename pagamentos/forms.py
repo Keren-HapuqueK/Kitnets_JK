@@ -4,10 +4,10 @@ from django.db import connection
 class RegistroPagamentoForm(forms.Form):
     dt_paga = forms.DateField(label="Data de Pagamento", widget=forms.DateInput(attrs={'type': 'date'}))
     ref_mes_ano = forms.CharField(label="Referência Mês/Ano", max_length=7)
-    observacao = forms.CharField(label="Observação", max_length=255, required=False)
     id_contrato = forms.ChoiceField(label="Contrato", choices=[])
     id_locatario = forms.ChoiceField(label="Locatário", choices=[])
     id_forma_pagamento = forms.ChoiceField(label="Forma de Pagamento", choices=[])
+    observacao = forms.CharField(label="Observação", max_length=255, required=False)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -32,9 +32,6 @@ class RegistroPagamentoForm(forms.Form):
             cursor.execute("SELECT ID_Forma_Pagamento, Desc_Forma_Pgto FROM Forma_Pagamento")
             forma_pagamento_options = cursor.fetchall()
         return [(str(option[0]), option[1]) for option in forma_pagamento_options]
-
-class FormaPagamentoForm(forms.Form):
-    desc_forma_pgto = forms.CharField(label="Descrição", max_length=255)
 
 
 

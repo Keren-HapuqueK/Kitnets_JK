@@ -1,0 +1,29 @@
+{% extends 'base_locatarios.html' %}
+{% block content %}
+<div class="content">
+    <h2>Detalhes do Locatário</h2>
+    <table class="table table-bordered">
+        <tr>
+            <th>Nome</th>
+            <td>{{ locatario.1 }}</td>
+        </tr>
+        <tr>
+            <th>Telefone</th>
+            <td>{{ locatario.2 }}</td>
+        </tr>
+        <tr>
+            <th>RG</th>
+            <td>{{ locatario.3 }}</td>
+        </tr>
+        <tr>
+            <th>CPF/CNPJ</th>
+            <td>{{ locatario.4 }}</td>
+        </tr>
+        <tr>
+            <th>Estado Civil</th>
+            <td>{{ locatario.5 }}</td>
+        </tr>
+    </table>
+    <a href="{% url 'listar_locatarios' %}" class="btn btn-primary">Voltar</a>
+</div>
+{% endblock %}

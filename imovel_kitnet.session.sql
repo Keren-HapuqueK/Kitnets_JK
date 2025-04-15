@@ -363,3 +363,5 @@ END;
 $$ LANGUAGE plpgsql;
 
 SELECT * FROM autenticacao
+
+SELECT * FROM Contrato WHERE ID_Imovel = <0>;

@@ -1,48 +1,160 @@
 {% extends 'base_locatarios.html' %}
 {% load static %}
 {% block content %}
-<div class="content">
-    <div class="header">
-        <div class="title">Lista de Locatários</div>
-        <form method="GET" class="d-flex">
-            <input type="text" name="search" value="{{ search_query }}" class="form-control me-2" placeholder="Pesquisar...">
-            <button type="submit" class="btn btn-primary header_cor">Pesquisar</button>
-        </form>
-        <form method="get" class="mb-3">
-            <label for="ordenar_por">Ordenar por: </label>
-            <select name="ordenar_por" id="ordenar_por" class="form-select">
-                <option value="nome">Nome</option>
-            </select>
-            <button type="submit" class="btn btn-primary mt-2 header_cor">Ordenar</button>
-        </form>
-        <a href="{% url 'criar_locatario' %}" class="btn btn-primary header_cor">Adicionar Locatário</a>
+<div class="content p-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        
+        <a href="{% url 'criar_locatario' %}" class="btn btn-success">
+            <i class="fas fa-plus"></i> + Adicionar Locatário
+        </a>
     </div>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Nome</th>
-                <th>Telefone</th>
-                <th>RG</th>
-                <th>CPF/CNPJ</th>
-                <th>Estado Civil</th>
-                <th>Ações</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for locatario in locatarios %}
-            <tr>
-                <td>{{ locatario.1 }}</td>
-                <td>{{ locatario.2 }}</td>
-                <td>{{ locatario.3 }}</td>
-                <td>{{ locatario.4 }}</td>
-                <td>{{ locatario.5 }}</td>
-                <td>
-                    <a href="{% url 'editar_locatario' locatario.0 %}" class="btn btn-warning">Editar</a>
-                    <a href="{% url 'excluir_locatario' locatario.0 %}" class="btn btn-danger">Excluir</a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+
+    <div class="card shadow-sm p-4 borda">
+        {% if messages %}
+            <div class="alert alert-success">
+                {% for message in messages %}
+                    {{ message }}
+                {% endfor %}
+            </div>
+        {% endif %}
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <form method="GET" class="input-group">
+                    <input type="text" name="search" value="{{ search_query }}" class="form-control" placeholder="Pesquisar...">
+                    <button type="submit" class="btn btn-warning">
+                        <img src="{% static 'images/pesqC.png' %}" alt="Search Icon" class="me-2" height="24px">
+                    </button>
+                </form>
+            </div>
+            <div class="col-md-6 text-end">
+                <form method="get">
+                    <select name="ordenar_por" id="ordenar_por" class="form-select d-inline w-auto">
+                        <option value="nome">Nome</option>
+                    </select>
+                    <button type="submit" class="btn btn-secondary">Ordenar</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="mensagem" class="alert alert-success d-none">
+            Locatário cadastrado com sucesso!
+        </div>        
+        
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered text-center">
+                <thead class="table custom-table">
+                    <tr>
+                        <th>Nome</th>
+                        <th>Telefone</th>
+                        <th>RG</th>
+                        <th>CPF/CNPJ</th>
+                        <th>Estado Civil</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for locatario in locatarios %}
+                    <tr id="row-{{ locatario.0 }}">
+                        <td>{{ locatario.1 }}</td>
+                        <td>{{ locatario.2 }}</td>
+                        <td>{{ locatario.3 }}</td>
+                        <td>{{ locatario.4 }}</td>
+                        <td>{{ locatario.5 }}</td>
+                        <td>
+                            <a href="{% url 'visualizar_locatario' locatario.0 %}" class="btn btn-info btn-sm">
+                                <img src="{% static 'images/Eye.png' %}" alt="Search Icon" class="me-2" height="22px">
+                            </a>
+                            <a href="{% url 'editar_locatario' locatario.0 %}" class="btn btn-warning btn-sm">
+                                <img src="{% static 'images/Edit.png' %}" alt="Search Icon" class="me-2" height="22px">
+                            </a>
+                            <a href="#" class="btn btn-danger btn-sm" onclick="confirmarExclusao(event, {{ locatario.0 }}, '{{ locatario.1 }}')">
+                                <img src="{% static 'images/Delete.png' %}" alt="Search Icon" class="me-2" height="22px">
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    function confirmarExclusao(event, id, nome) {
+        event.preventDefault();
+
+        Swal.fire({
+            title: "Tem certeza?",
+            text: `Deseja excluir o locatário "${nome}"? Esta ação não pode ser desfeita.`,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "Sim, excluir!",
+            cancelButtonText: "Cancelar"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch(`/locatarios/excluir/${id}/`, {
+                    method: "POST",
+                    headers: {
+                        "X-CSRFToken": getCookie("csrftoken"),
+                        "Content-Type": "application/json"
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        Swal.fire({
+                            title: "Excluído!",
+                            text: "O locatário foi removido com sucesso.",
+                            icon: "success",
+                            timer: 2000, // Fecha automaticamente após 2 segundos
+                            showConfirmButton: false
+                        });
+
+                        document.getElementById(`row-${id}`).remove();
+                    } else {
+                        throw new Error(data.error || "Erro desconhecido.");
+                    }
+                })
+                .catch(error => {
+                    Swal.fire("Erro!", `Ocorreu um erro: ${error.message}`, "error");
+                });
+            }
+        });
+    }
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== "") {
+            let cookies = document.cookie.split(";");
+            for (let i = 0; i < cookies.length; i++) {
+                let cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + "=")) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+</script>
+<script>
+    function cadastrarLocatario() {
+        // Aqui vai o código para cadastrar o locatário (exemplo fictício)
+        
+        // Exibir a mensagem
+        let mensagem = document.getElementById("mensagem");
+        mensagem.classList.remove("d-none"); // Remove a classe que esconde
+        mensagem.classList.add("show"); // Adiciona classe para exibir
+        
+        // Esconder automaticamente após 3 segundos
+        setTimeout(() => {
+            mensagem.classList.add("d-none");
+        }, 3000);
+    }
+    
+    
+</script>
 {% endblock %}

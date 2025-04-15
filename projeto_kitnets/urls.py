@@ -32,4 +32,5 @@ urlpatterns = [
     path('estado_civil/', include('estado_civil.urls')),  # Inclui as rotas de estado civil
     path('inicio.html', TemplateView.as_view(template_name='inicio.html'), name='inicio'),
     path('pagamentos/', include('pagamentos.urls')),  # Inclui as rotas de pagamentos
+    path('forma_pagamento/', include('forma_pagamento.urls')),  # Inclui as rotas de forma de pagamento
 ]

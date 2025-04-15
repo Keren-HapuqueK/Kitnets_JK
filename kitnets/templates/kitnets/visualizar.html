@@ -1,40 +1,43 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
-<div class="content">
-    <div class="header">
-        <div class="title">Detalhes do Imóvel</div>
+<div class="container mt-4">
+    <div class="card shadow-lg p-4">
+        <h2 class="title">Detalhes do Imóvel</h2>
+        <table class="table table-striped">
+            <tr>
+                <th>ID</th>
+                <td>{{ imovel.0 }}</td>
+            </tr>
+            <tr>
+                <th>Locador</th>
+                <td>{{ imovel.1 }}</td>
+            </tr>
+            <tr>
+                <th>Endereço</th>
+                <td>{{ imovel.2 }}</td>
+            </tr>
+            <tr>
+                <th>Descrição</th>
+                <td>{{ imovel.3 }}</td>
+            </tr>
+            <tr>
+                <th>Disponível</th>
+                <td>{{ imovel.4 }}</td>
+            </tr>
+            <tr>
+                <th>Valor Aluguel</th>
+                <td>{{ imovel.5 }}</td>
+            </tr>
+            <tr>
+                <th>UC</th>
+                <td>{{ imovel.6 }}</td>
+            </tr>
+        </table>
+        <div class="text-center">
+            <a href="{% url 'listar_imoveis' %}" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Voltar</a>
+        </div>
     </div>
-    <table class="table table-striped">
-        <tr>
-            <th>ID</th>
-            <td>{{ imovel.0 }}</td>
-        </tr>
-        <tr>
-            <th>Locador</th>
-            <td>{{ imovel.1 }}</td>
-        </tr>
-        <tr>
-            <th>Endereço</th>
-            <td>{{ imovel.2 }}</td>
-        </tr>
-        <tr>
-            <th>Descrição</th>
-            <td>{{ imovel.3 }}</td>
-        </tr>
-        <tr>
-            <th>Disponível</th>
-            <td>{{ imovel.4 }}</td>
-        </tr>
-        <tr>
-            <th>Valor Aluguel</th>
-            <td>{{ imovel.5 }}</td>
-        </tr>
-        <tr>
-            <th>UC</th>
-            <td>{{ imovel.6 }}</td>
-        </tr>
-    </table>
-    <a href="{% url 'listar_imoveis' %}" class="btn btn-secondary">Voltar</a>
 </div>
 {% endblock %}

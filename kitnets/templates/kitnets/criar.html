@@ -1,14 +1,42 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
-<div class="content">
-    <div class="header">
-        <div class="title">Adicionar Imóvel</div>
+<div class="container mt-4">
+    <div class="card shadow-lg p-4">
+        <h2 class="title">Adicionar Imóvel</h2>
+        <form method="post" class="mt-3">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="id_endereco" class="form-label"><i class="fas fa-map-marker-alt"></i> Endereço</label>
+                <input type="text" name="endereco" id="id_endereco" class="form-control" placeholder="Endereço" value="{{ form.endereco.value|default:'' }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="id_descricao" class="form-label"><i class="fas fa-file-alt"></i> Descrição</label>
+                <input type="text" name="descricao" id="id_descricao" class="form-control" placeholder="Descrição" value="{{ form.descricao.value|default:'' }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="id_disponivel" class="form-label"><i class="fas fa-check-circle"></i> Disponível</label>
+                <select name="disponivel" id="id_disponivel" class="form-select" required>
+                    <option value="">Selecione...</option>
+                    {% for value, label in form.disponivel.field.choices %}
+                        <option value="{{ value }}" {% if form.disponivel.value == value %}selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="id_vlr_aluguel" class="form-label"><i class="fas fa-dollar-sign"></i> Valor do Aluguel</label>
+                <input type="text" name="vlr_aluguel" id="id_vlr_aluguel" class="form-control" placeholder="Valor do Aluguel" value="{{ form.vlr_aluguel.value|default:'' }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="id_uc" class="form-label"><i class="fas fa-building"></i> UC</label>
+                <input type="text" name="uc" id="id_uc" class="form-control" placeholder="UC" value="{{ form.uc.value|default:'' }}" required>
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">Salvar</button>
+                <a href="{% url 'listar_imoveis' %}" class="btn btn-secondary"><i class="fas fa-times"></i> Cancelar</a>
+            </div>
+        </form>
     </div>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">Salvar</button>
-    </form>
 </div>
 {% endblock %}

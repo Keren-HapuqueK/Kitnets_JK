@@ -1,78 +1,73 @@
-.template {
-    background-color: #fff8d0;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    width: 100%;
-  }
-  
-  .template .div {
-    background-color: #fff8d0;
-    width: 1440px;
-    height: 1024px;
-    position: relative;
-  }
-  
-  /* Sidebar */
-  .template .overlap {
-    position: absolute;
-    width: 307px;
-    height: 1024px;
-    top: 0;
-    left: 0;
-    background-color: #161300 !important;
-  }
-  
-  .template .opes {
-    position: absolute;
-    width: 270px;
-    height: 210px;
-    top: 181px;
-    left: 16px;
-  }
-  
-  .template .group-pagamentos .pagamentos {
-    width: 137px;
-    height: 32px;
-    top: 13px;
-    left: 69px;
-  }
-  
-  .template .group-pagamentos .icon-wallet {
-    width: 50px;
-    height: 49px;
-  }
-  
-  /* Conteúdo */
-  .template .perfil-wrapper {
-    position: absolute;
-    width: 1133px;
-    height: 118px;
-    top: 0;
-    left: 307px;
-    background-color: #161300;
-  }
-  
-  .template .perfil .female-user {
-    width: 45px;
-    height: 45px;
-    top: 13px;
-    left: 6px;
-  }
-  
-  .template .titulos-inquilinos .text-wrapper-2 {
-    font-size: 64px;
-    font-family: "Oswald-Bold", Helvetica;
-  }
-  
-  .template .overlap-4 {
-    position: absolute;
-    width: 1043px;
-    height: 569px;
-    top: 399px;
-    left: 345px;
-    background-color: #fffcef;
-    border-radius: 10px;
-    border: 2px solid #e3b605;
-  }
-  
+/* Estilos para a lista de cadastros */
+.content {
+  padding: 20px;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.title {
+  font-size: 40px;
+  font-weight: bold;
+  color: #100d01;
+  text-align: center;
+}
+
+.table {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.table th, .table td {
+  padding: 12px;
+  text-align: left;
+}
+
+.table th {
+  background-color: #161301;
+  color: white;
+}
+
+.custom-table {
+  background-color: #E4B706; /* Roxo */
+  color: white; /* Texto branco para melhor contraste */
+}
+
+.custom-table th {
+  background-color: #161301; /* Roxo escuro */
+  color: white; 
+}
+
+.custom-table td {
+  border: 1px solid #E4B706; 
+}
+
+.borda {
+  border: 1px solid #E4B706; 
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: rgba(59, 43, 0, 0.141);
+}
+
+.table-hover tbody tr:hover {
+  background-color: rgba(42, 29, 0, 0.163);
+}
+
+.btn-sm {
+  padding: 5px 10px;
+  font-size: 14px;
+}
+
+.header_cor {
+  background-color: #161301;
+  border-color: #161301;
+}
+
+.header_cor:hover {
+  background-color: #403e34;
+  border-color: #403e34;
+}

@@ -1,14 +1,57 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
-<div class="content">
-    <div class="header">
-        <div class="title">Editar Contrato</div>
+<div class="container mt-4">
+    <div class="card shadow-lg p-4">
+        <h2 class="title">Editar Contrato</h2>
+        <form method="post" class="mt-3">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="id_numero_contrato" class="form-label"><i class="fas fa-file-alt"></i> Número do Contrato</label>
+                <input type="text" name="numero_contrato" id="id_numero_contrato" class="form-control" placeholder="Número do Contrato" value="{{ form.numero_contrato.value|default:'' }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="id_valor_aluguel" class="form-label"><i class="fas fa-dollar-sign"></i> Valor do Aluguel</label>
+                <input type="text" name="valor_aluguel" id="id_valor_aluguel" class="form-control" placeholder="Valor do Aluguel" value="{{ form.valor_aluguel.value|default:'' }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="id_data_inicio" class="form-label"><i class="fas fa-calendar-alt"></i> Data de Início</label>
+                <input type="date" name="data_inicio" id="id_data_inicio" class="form-control" value="{{ form.data_inicio.value|default:'' }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="id_dia_base" class="form-label"><i class="fas fa-calendar-day"></i> Dia Base</label>
+                <input type="number" name="dia_base" id="id_dia_base" class="form-control" placeholder="Dia Base" value="{{ form.dia_base.value|default:'' }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="id_data_fim" class="form-label"><i class="fas fa-calendar-alt"></i> Data de Fim</label>
+                <input type="date" name="data_fim" id="id_data_fim" class="form-control" value="{{ form.data_fim.value|default:'' }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="id_cidade" class="form-label"><i class="fas fa-city"></i> Cidade</label>
+                <input type="text" name="cidade" id="id_cidade" class="form-control" placeholder="Cidade" value="{{ form.cidade.value|default:'' }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="id_uf" class="form-label"><i class="fas fa-map-marker-alt"></i> UF</label>
+                <input type="text" name="uf" id="id_uf" class="form-control" placeholder="UF" value="{{ form.uf.value|default:'' }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="id_imovel" class="form-label"><i class="fas fa-home"></i> Imóvel</label>
+                <input type="text" name="imovel" id="id_imovel" class="form-control" placeholder="Imóvel" value="{{ form.imovel.value|default:'' }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="id_locatario" class="form-label"><i class="fas fa-user"></i> Locatário</label>
+                <input type="text" name="locatario" id="id_locatario" class="form-control" placeholder="Locatário" value="{{ form.locatario.value|default:'' }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="id_locador" class="form-label"><i class="fas fa-user-tie"></i> Locador</label>
+                <input type="text" name="locador" id="id_locador" class="form-control" placeholder="Locador" value="{{ form.locador.value|default:'' }}" required>
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">Salvar</button>
+                <a href="{% url 'listar_contratos' %}" class="btn btn-secondary"><i class="fas fa-times"></i> Cancelar</a>
+            </div>
+        </form>
     </div>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">Salvar</button>
-    </form>
 </div>
 {% endblock %}

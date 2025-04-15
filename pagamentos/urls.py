@@ -6,8 +6,6 @@ urlpatterns = [
     path('criar/', views.criar_pagamento, name='criar_pagamento'),
     path('editar/<int:id_pagamento>/', views.editar_pagamento, name='editar_pagamento'),
     path('excluir/<int:id_pagamento>/', views.excluir_pagamento, name='excluir_pagamento'),
-    path('forma_pagamento/', views.listar_formas_pagamento, name='listar_formas_pagamento'),
-    path('forma_pagamento/criar/', views.criar_forma_pagamento, name='criar_forma_pagamento'),
-    path('forma_pagamento/editar/<int:id_forma_pagamento>/', views.editar_forma_pagamento, name='editar_forma_pagamento'),
-    path('forma_pagamento/excluir/<int:id_forma_pagamento>/', views.excluir_forma_pagamento, name='excluir_forma_pagamento'),
+    path('visualizar/<int:id_pagamento>/', views.visualizar_pagamento, name='visualizar_pagamento'),
+
 ]

@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card shadow-lg p-4">
+        <h2 class="title">Detalhes do Locador</h2>
+        <table class="table table-striped">
+            <tr>
+                <th>Nome</th>
+                <td>{{ locador.1 }}</td>
+            </tr>
+            <tr>
+                <th>Telefone</th>
+                <td>{{ locador.2 }}</td>
+            </tr>
+            <tr>
+                <th>RG</th>
+                <td>{{ locador.3 }}</td>
+            </tr>
+            <tr>
+                <th>CPF/CNPJ</th>
+                <td>{{ locador.4 }}</td>
+            </tr>
+            <tr>
+                <th>Estado Civil</th>
+                <td>{{ locador.5 }}</td>
+            </tr>
+        </table>
+        <div class="text-center">
+            <a href="{% url 'listar_locadores' %}" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Voltar</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

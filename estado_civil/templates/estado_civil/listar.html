@@ -1,44 +1,107 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block content %}
-<div class="content">
-    <div class="header">
-        <div class="title">Lista de Estados Civis</div>
-        <form method="GET" class="d-flex">
-            <input type="text" name="search" value="{{ search_query }}" class="form-control me-2" placeholder="Pesquisar...">
-            <button type="submit" class="btn btn-primary header_cor">Pesquisar</button>
-        </form>
-        <form method="get" class="mb-3">
-            <label for="ordenar_por">Ordenar por: </label>
-            <select name="ordenar_por" id="ordenar_por" class="form-select">
-                <option value="descricao">Descrição</option>
-            </select>
-            <button type="submit" class="btn btn-primary mt-2">Ordenar</button>
-        </form>
-        <a href="{% url 'criar_estado_civil' %}" class="btn btn-primary header_cor">Adicionar Estado Civil</a>
+<div class="content p-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <a href="{% url 'criar_estado_civil' %}" class="btn btn-success">
+            <i class="fas fa-plus"></i> + Adicionar Estado Civil
+        </a>
     </div>
-    {% if estados_civis %}
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Descrição</th>
-                    <th>Ações</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for estado_civil in estados_civis %}
-                <tr>
-                    <td>{{ estado_civil.1 }}</td>
-                    <td>
-                        <a href="{% url 'editar_estado_civil' estado_civil.0 %}" class="btn btn-warning">Editar</a>
-                        <a href="{% url 'excluir_estado_civil' estado_civil.0 %}" class="btn btn-danger">Excluir</a>
-                    </td>
-                </tr>
+
+    <div class="card shadow-sm p-4 borda">
+        {% if messages %}
+            <div class="alert alert-success">
+                {% for message in messages %}
+                    {{ message }}
                 {% endfor %}
-            </tbody>
-        </table>
-    {% else %}
-        <p>Nenhum estado civil encontrado.</p>
-    {% endif %}
+            </div>
+        {% endif %}
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <form method="GET" class="input-group">
+                    <input type="text" name="search" value="{{ search_query }}" class="form-control" placeholder="Pesquisar...">
+                    <button type="submit" class="btn btn-warning">
+                        <img src="{% static 'images/pesqC.png' %}" alt="Search Icon" class="me-2" height="24px">
+                    </button>
+                </form>
+            </div>
+            <div class="col-md-6 text-end">
+                <form method="get">
+                    <select name="ordenar_por" id="ordenar_por" class="form-select d-inline w-auto">
+                        <option value="descricao">Descrição</option>
+                    </select>
+                    <button type="submit" class="btn btn-secondary">Ordenar</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered text-center">
+                <thead class="table custom-table">
+                    <tr>
+                        <th>Descrição</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for estado_civil in estados_civis %}
+                    <tr id="row-{{ estado_civil.0 }}">
+                        <td>{{ estado_civil.1 }}</td>
+                        <td>
+                            <a href="{% url 'visualizar_estado_civil' estado_civil.0 %}" class="btn btn-info btn-sm">
+                                <img src="{% static 'images/Eye.png' %}" alt="Search Icon" class="me-2" height="22px">
+                            </a>
+                            <a href="{% url 'editar_estado_civil' estado_civil.0 %}" class="btn btn-warning btn-sm">
+                                <img src="{% static 'images/Edit.png' %}" alt="Search Icon" class="me-2" height="22px">
+                            </a>
+                            <a href="#" class="btn btn-danger btn-sm" onclick="confirmarExclusao(event, {{ estado_civil.0 }}, '{{ estado_civil.1 }}')">
+                                <img src="{% static 'images/Delete.png' %}" alt="Search Icon" class="me-2" height="22px">
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    function confirmarExclusao(event, id, descricao) {
+        event.preventDefault();
+        let csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+        Swal.fire({
+            title: "Tem certeza?",
+            text: `Você realmente deseja excluir o estado civil "${descricao}"? Esta ação não pode ser desfeita.`,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "Sim, excluir!",
+            cancelButtonText: "Cancelar"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch("{% url 'excluir_estado_civil' 0 %}".replace("0", id), {
+                    method: "POST",
+                    headers: {
+                        "X-CSRFToken": csrfToken,
+                        "Content-Type": "application/json"
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        Swal.fire("Excluído!", "O estado civil foi removido com sucesso.", "success");
+                        document.getElementById(`row-${id}`).remove();
+                    }
+                })
+                .catch(error => {
+                    Swal.fire("Erro!", "Ocorreu um erro: " + error.message, "error");
+                });
+            }
+        });
+    }
+</script>
 {% endblock %}

@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'contratos',
     'estado_civil',
     'locadores',
+    'forma_pagamento',
 ]
 
 MIDDLEWARE = [

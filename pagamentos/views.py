@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from django.db import connection
 from django.http import HttpResponse
-from .forms import RegistroPagamentoForm, FormaPagamentoForm
+from .forms import RegistroPagamentoForm
+
 
 def listar_pagamentos(request):
     search_query = request.GET.get('search', '').lower()
@@ -32,10 +33,10 @@ def listar_pagamentos(request):
             'id': p[0],
             'data_pagamento': p[1],
             'referencia': p[2],
-            'observacao': p[3],
             'contrato': {'nome': p[4]},
             'locatario': {'nome': p[5]},
-            'forma_pagamento': {'nome': p[6]}
+            'forma_pagamento': {'nome': p[6]},
+            'observacao': p[3]
         }
         for p in pagamentos
     ]
@@ -99,7 +100,7 @@ def editar_pagamento(request, id_pagamento):
             return HttpResponse("Pagamento não encontrado", status=404)
 
         form = RegistroPagamentoForm(initial={
-            'dt_paga': pagamento[1],
+            'dt_paga': pagamento[1].strftime('%Y-%m-%d') if pagamento[1] else '',
             'ref_mes_ano': pagamento[2],
             'observacao': pagamento[3],
             'id_contrato': pagamento[4],
@@ -130,80 +131,24 @@ def excluir_pagamento(request, id_pagamento):
 
         return render(request, 'pagamentos/excluir.html', {'pagamento': pagamento})
 
-def listar_formas_pagamento(request):
-    search_query = request.GET.get('search', '').lower()
-    ordenar_por = request.GET.get('ordenar_por', 'desc_forma_pgto')  # Ordena por desc_forma_pgto por padrão
-    with connection.cursor() as cursor:
-        if search_query:
-            cursor.execute(f"""
-                SELECT * FROM Forma_Pagamento
-                WHERE LOWER(desc_forma_pgto) LIKE %s
-                ORDER BY {ordenar_por} ASC
-            """, [f'%{search_query}%'])
-        else:
-            cursor.execute(f"SELECT * FROM Forma_Pagamento ORDER BY {ordenar_por} ASC")
-        formas_pagamento = cursor.fetchall()
-    return render(request, 'forma_pagamento/listar.html', {'formas_pagamento': formas_pagamento, 'search_query': search_query, 'ordenar_por': ordenar_por})
+def visualizar_pagamento(request, id_pagamento):
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute("""
+                SELECT rp.ID_Pagamento, rp.DT_Paga, rp.Ref_Mes_Ano, rp.Observacao, 
+                       c.NU_Contrato, l.Nome, fp.Desc_Forma_Pgto
+                FROM Registro_Pagamento rp
+                LEFT JOIN Contrato c ON rp.ID_Contrato = c.ID_Contrato
+                LEFT JOIN Locatario l ON rp.ID_Locatario = l.ID_Locatario
+                LEFT JOIN Forma_Pagamento fp ON rp.ID_Forma_Pagamento = fp.ID_Forma_Pagamento
+                WHERE rp.ID_Pagamento = %s
+            """, [id_pagamento])
+            pagamento = cursor.fetchone()
+        
+        if pagamento is None:
+            return HttpResponse("Pagamento não encontrado", status=404)
 
-def criar_forma_pagamento(request):
-    if request.method == 'POST':
-        form = FormaPagamentoForm(request.POST)
-        if form.is_valid():
-            desc_forma_pgto = form.cleaned_data['desc_forma_pgto']
-            try:
-                with connection.cursor() as cursor:
-                    cursor.callproc('criar_forma_pagamento', [desc_forma_pgto])
-                    return redirect('listar_formas_pagamento')
-            except Exception as e:
-                return HttpResponse(f"Erro ao adicionar forma de pagamento: {e}", status=500)
-    else:
-        form = FormaPagamentoForm()
-    return render(request, 'forma_pagamento/criar.html', {'form': form})
-
-def editar_forma_pagamento(request, id_forma_pagamento):
-    if request.method == 'POST':
-        form = FormaPagamentoForm(request.POST)
-        if form.is_valid():
-            desc_forma_pgto = form.cleaned_data['desc_forma_pgto']
-            try:
-                with connection.cursor() as cursor:
-                    cursor.callproc('editar_forma_pagamento', [id_forma_pagamento, desc_forma_pgto])
-                    return redirect('listar_formas_pagamento')
-            except Exception as e:
-                return HttpResponse(f"Erro ao editar forma de pagamento: {e}", status=500)
-    else:
-        forma_pagamento = None
-        try:
-            with connection.cursor() as cursor:
-                cursor.execute("SELECT * FROM Forma_Pagamento WHERE ID_Forma_Pagamento = %s", [id_forma_pagamento])
-                forma_pagamento = cursor.fetchone()
-        except Exception as e:
-            return HttpResponse(f"Erro ao carregar forma de pagamento: {e}", status=500)
-
-        if forma_pagamento is None:
-            return HttpResponse("Forma de pagamento não encontrada", status=404)
-
-        form = FormaPagamentoForm(initial={'desc_forma_pgto': forma_pagamento[1]})
-    return render(request, 'forma_pagamento/editar.html', {'form': form})
-
-def excluir_forma_pagamento(request, id_forma_pagamento):
-    if request.method == 'POST':
-        try:
-            with connection.cursor() as cursor:
-                cursor.callproc('excluir_forma_pagamento', [id_forma_pagamento])
-                return redirect('listar_formas_pagamento')
-        except Exception as e:
-            return HttpResponse(f"Erro ao excluir forma de pagamento: {e}", status=500)
-    else:
-        forma_pagamento = None
-        try:
-            with connection.cursor() as cursor:
-                cursor.execute("SELECT * FROM Forma_Pagamento WHERE ID_Forma_Pagamento = %s", [id_forma_pagamento])
-                forma_pagamento = cursor.fetchone()
-        except Exception as e:
-            return HttpResponse(f"Erro ao carregar forma de pagamento: {e}", status=500)
-
-        if forma_pagamento is None:
-            return HttpResponse("Forma de pagamento não encontrada", status=404)
-
-        return render(request, 'forma_pagamento/excluir.html', {'forma_pagamento': forma_pagamento})
+        return render(request, 'pagamentos/visualizar.html', {'pagamento': pagamento})
+    
+    except Exception as e:
+        return HttpResponse(f"Erro ao visualizar pagamento: {e}", status=500)
